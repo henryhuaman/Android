@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/logo"
+        android:icon="@drawable/iconoprincipal"
+        android:title="HomeCurse"
+        />
+
+    <item
+        android:title="Cursos"
+        android:icon="@drawable/cursos"
+        android:id="@+id/itCursos"
+        />
+    <item
+        android:title="Profesores"
+        android:icon="@drawable/profesores"
+        android:id="@+id/itProfesores"/>
+
+    <item
+        android:id="@+id/itCarrito"
+        android:icon="@drawable/carrito"
+        android:title=""
+        />
+
+
+
+</menu>
