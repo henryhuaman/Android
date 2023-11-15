@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.homecourseandroid.Adapter.CursoAdapter;
@@ -23,21 +24,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfActivity extends AppCompatActivity {
+public class ProfActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     public ServiceAPI serviceAPI;
     private RecyclerView recyclerView;
     private CursoAdapter cursoAdapter;
+    private SearchView txtBuscar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prof);
         recyclerView = findViewById(R.id.ListRecycler);
+        txtBuscar = findViewById(R.id.txtBuscar);
         //card = findViewById()
         serviceAPI = ConexionREST.getConnection().create(ServiceAPI.class);
         cargarDatosDelAPI();
-
+        txtBuscar.setOnQueryTextListener(this);
 
 
     }
@@ -70,5 +73,16 @@ public class ProfActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        cursoAdapter.filtrado(newText);
+        return false;
     }
 }

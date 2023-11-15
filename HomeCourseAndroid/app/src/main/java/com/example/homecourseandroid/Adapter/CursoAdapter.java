@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,10 +17,13 @@ import com.example.homecourseandroid.Activities.MainActivity;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
     private List<Curso> cursos;
+    private  List<Curso> cursosO;
     private LayoutInflater mInflater;
     private Context context;
 
@@ -29,6 +31,8 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
         this.cursos = cursos;
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
+        cursosO = new ArrayList<>();
+        cursosO.addAll(cursos);
     }
 
     @Override
@@ -43,6 +47,24 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
         return new CursoAdapter.ViewHolder(view);
     }
 
+    public void filtrado(String busc){
+        cursos.clear();
+        if(busc.length() == 0){
+            // Si la cadena de búsqueda está vacía, restaura la lista original
+            cursos.addAll(cursosO);
+        } else {
+            // Filtrar en una nueva lista
+            List<Curso> coleccion = cursosO.stream().filter(i ->
+                            i.getNombre().toLowerCase().contains(busc.toLowerCase()) ||
+                                    i.getCategoria().toLowerCase().contains(busc.toLowerCase()) ||
+                                    String.valueOf(i.getPrecio()).toLowerCase().contains(busc.toLowerCase()))
+                    .collect(Collectors.toList());
+            cursos.clear();
+            cursos.addAll(coleccion);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull final CursoAdapter.ViewHolder holder, int position) {
         holder.bindData(cursos.get(position));
@@ -54,23 +76,28 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
-        TextView name, city,status;
+        TextView nombre, categoria, precio;
         LinearLayout verDet;
 
         ViewHolder(View itemView){
             super(itemView);
             iconImage = itemView.findViewById(R.id.iconImage);
-            name = itemView.findViewById(R.id.nameTextView);
-            city = itemView.findViewById(R.id.cityTextView);
-            status = itemView.findViewById(R.id.statusTextView);
+            nombre = itemView.findViewById(R.id.nameTextView);
+            categoria = itemView.findViewById(R.id.cityTextView);
+            precio = itemView.findViewById(R.id.statusTextView);
             verDet = itemView.findViewById(R.id.carddd);
         }
 
         void bindData(final Curso item){
             //iconImage.setColorFilter(Color.parseColor());
-            name.setText(item.getNombre());
-            city.append(item.getCategoria());
-            status.append(String.valueOf(item.getPrecio()));
+
+            nombre.setText("");
+            categoria.setText("Categoria: ");
+            precio.setText("Precio: ");
+
+            nombre.setText(item.getNombre());
+            categoria.append(item.getCategoria());
+            precio.append(String.valueOf(item.getPrecio()));
             verDet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
