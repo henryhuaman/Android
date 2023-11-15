@@ -13,12 +13,12 @@ import retrofit2.http.Path;
 
 public interface ServiceAPI
 {
-    @GET("producto")
+    @GET("curso")
     public abstract Call<List<Curso>> listCursos();
-    @POST("producto/agregar")
+    @POST("curso/agregar")
     public abstract Call<Curso> addCurso(@Body Curso obj);
-    @PUT("/producto/modificar")
+    @PUT("/curso/modificar")
     public abstract  Call<Curso> modifyCurso(@Body Curso obj);
-    @DELETE("producto/eliminar/{id}")
+    @DELETE("curso/eliminar/{id}")
     public abstract Call<Curso> removeCurso(@Path("id") int id);
 }

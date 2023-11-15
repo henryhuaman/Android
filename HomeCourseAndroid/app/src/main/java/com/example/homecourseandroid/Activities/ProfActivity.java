@@ -1,47 +1,74 @@
 package com.example.homecourseandroid.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.homecourseandroid.Adapter.CursoAdapter;
+import com.example.homecourseandroid.Api.ServiceAPI;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
+import com.example.homecourseandroid.Util.ConexionREST;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProfActivity extends AppCompatActivity {
-    // Crear tres instancias de la clase Curso
-    Curso curso1 = new Curso("1", "Curso de Programación", "Aprende a programar en Java", "Programación", "Profesor1", 99.99);
-    Curso curso2 = new Curso("2", "Curso de Diseño Gráfico", "Introducción al diseño gráfico", "Diseño", "Profesor2", 79.99);
-    Curso curso3 = new Curso("3", "Curso de Inglés", "Mejora tus habilidades en inglés", "Idiomas", "Profesor3", 49.99);
 
-    // Crear una lista y agregar los cursos a la lista
-    List<Curso> listaCursos = new ArrayList<>();
-
+    public ServiceAPI serviceAPI;
+    private RecyclerView recyclerView;
+    private CursoAdapter cursoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prof);
-        listaCursos.add(curso1);
-        listaCursos.add(curso2);
-        listaCursos.add(curso3);
-        listaCursos.add(curso1);
-        listaCursos.add(curso2);
-        listaCursos.add(curso3);
-        listaCursos.add(curso1);
-        listaCursos.add(curso2);
-        listaCursos.add(curso3);
+        recyclerView = findViewById(R.id.ListRecycler);
+        //card = findViewById()
+        serviceAPI = ConexionREST.getConnection().create(ServiceAPI.class);
+        cargarDatosDelAPI();
 
 
-        CursoAdapter cursoAdapter = new CursoAdapter(listaCursos, ProfActivity.this);
-        RecyclerView recyclerView = findViewById(R.id.ListRecycler);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(cursoAdapter);
+
+    }
+
+    void cargarDatosDelAPI(){
+        Call<List<Curso>> call = serviceAPI.listCursos();
+        call.enqueue(new Callback<List<Curso>>() {
+            @Override
+            public void onResponse(Call<List<Curso>> call, Response<List<Curso>> response) {
+                if(response.isSuccessful())
+                {
+                    List<Curso> lstCurso = response.body();
+                    cursoAdapter = new CursoAdapter(lstCurso, ProfActivity.this);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ProfActivity.this));
+                    recyclerView.setAdapter(cursoAdapter);
+
+                }else
+                {
+                    Toast.makeText(null,"Error",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Curso>> call, Throwable t) {
+                System.err.println("Error en la solicitud: " + t.getMessage());
+                System.err.println("StackTrace: ");
+                t.printStackTrace(); // Esto imprimirá la traza de la pila para obtener más detalles del error.
+                Toast.makeText(ProfActivity.this,"Ocurrio un error",Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }

@@ -2,15 +2,19 @@ package com.example.homecourseandroid.Adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homecourseandroid.Activities.MainActivity;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
 
@@ -51,6 +55,7 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView iconImage;
         TextView name, city,status;
+        LinearLayout verDet;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -58,14 +63,22 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
             name = itemView.findViewById(R.id.nameTextView);
             city = itemView.findViewById(R.id.cityTextView);
             status = itemView.findViewById(R.id.statusTextView);
-
+            verDet = itemView.findViewById(R.id.carddd);
         }
 
         void bindData(final Curso item){
             //iconImage.setColorFilter(Color.parseColor());
             name.setText(item.getNombre());
-            city.setText(item.getCategoria());
-            status.setText(String.valueOf(item.getPrecio()));
+            city.append(item.getCategoria());
+            status.append(String.valueOf(item.getPrecio()));
+            verDet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MainActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+
         }
     }
 

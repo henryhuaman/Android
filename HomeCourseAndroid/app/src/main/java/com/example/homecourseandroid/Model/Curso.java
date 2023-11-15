@@ -1,62 +1,62 @@
 package com.example.homecourseandroid.Model;
 
 public class Curso {
-    private String Id;
-    private String Nombre;
-    private String Descripcion;
-    private String Categoria;
-    private String ProfesorId;
+    private String id;
+    private String nombre;
+    private String descripcion;
+    private String categoria;
+    private String profesorId;
     private double precio;
 
     public Curso(String id, String nombre, String descripcion, String categoria, String profesorId, double precio) {
-        Id = id;
-        Nombre = nombre;
-        Descripcion = descripcion;
-        Categoria = categoria;
-        ProfesorId = profesorId;
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+        this.profesorId = profesorId;
         this.precio = precio;
     }
     public Curso() {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
-        return Descripcion;
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
+        this.descripcion = descripcion;
     }
 
     public String getCategoria() {
-        return Categoria;
+        return categoria;
     }
 
     public void setCategoria(String categoria) {
-        Categoria = categoria;
+        this.categoria = categoria;
     }
 
     public String getProfesorId() {
-        return ProfesorId;
+        return profesorId;
     }
 
     public void setProfesorId(String profesorId) {
-        ProfesorId = profesorId;
+        this.profesorId = profesorId;
     }
 
     public double getPrecio() {

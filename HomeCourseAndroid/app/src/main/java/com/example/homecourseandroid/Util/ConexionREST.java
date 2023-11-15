@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConexionREST {
 
-    private static final String URL = "http://dbpusil-001-site1.etempurl.com/api/";
+    private static final String URL = "http://port2002-001-site1.ctempurl.com/api/";
 
     private static Retrofit retrofit = null;
 
