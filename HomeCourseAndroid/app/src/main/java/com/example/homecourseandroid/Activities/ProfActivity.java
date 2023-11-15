@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class ProfActivity extends AppCompatActivity{
 
     public ServiceAPI serviceAPI;
     private RecyclerView recyclerView;
@@ -40,7 +40,18 @@ public class ProfActivity extends AppCompatActivity implements SearchView.OnQuer
         //card = findViewById()
         serviceAPI = ConexionREST.getConnection().create(ServiceAPI.class);
         cargarDatosDelAPI();
-        txtBuscar.setOnQueryTextListener(this);
+        txtBuscar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                cursoAdapter.filtrado(newText);
+                return false;
+            }
+        });
 
 
     }
@@ -75,14 +86,5 @@ public class ProfActivity extends AppCompatActivity implements SearchView.OnQuer
         });
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        cursoAdapter.filtrado(newText);
-        return false;
-    }
 }
