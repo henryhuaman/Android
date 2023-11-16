@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 
 public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
     private List<Curso> cursos;
-    private  List<Curso> cursosO;
+    private  List<Curso> cursosSearch;
+    private List<Curso> cursosSpn;
     private LayoutInflater mInflater;
     private Context context;
 
@@ -31,8 +32,8 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
         this.cursos = cursos;
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        cursosO = new ArrayList<>();
-        cursosO.addAll(cursos);
+        cursosSearch = new ArrayList<>();
+        cursosSearch.addAll(cursos);
     }
 
     @Override
@@ -47,14 +48,29 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
         return new CursoAdapter.ViewHolder(view);
     }
 
-    public void filtrado(String busc){
+    public void filtradoSpn(String opc){
+        cursos.clear();
+        if(opc.equals("Sin filtro")){
+            // Si la cadena de búsqueda está vacía, restaura la lista original
+            cursos.addAll(cursosSearch);
+        } else {
+            // Filtrar en una nueva lista
+            List<Curso> coleccion = cursosSearch.stream().filter(i ->i.getCategoria().toLowerCase().contains(opc.toLowerCase()))
+                    .collect(Collectors.toList());
+            cursos.clear();
+            cursos.addAll(coleccion);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void filtradoSearch(String busc){
         cursos.clear();
         if(busc.length() == 0){
             // Si la cadena de búsqueda está vacía, restaura la lista original
-            cursos.addAll(cursosO);
+            cursos.addAll(cursosSearch);
         } else {
             // Filtrar en una nueva lista
-            List<Curso> coleccion = cursosO.stream().filter(i ->
+            List<Curso> coleccion = cursosSearch.stream().filter(i ->
                             i.getNombre().toLowerCase().contains(busc.toLowerCase()) ||
                                     i.getCategoria().toLowerCase().contains(busc.toLowerCase()) ||
                                     String.valueOf(i.getPrecio()).toLowerCase().contains(busc.toLowerCase()))

@@ -34,6 +34,7 @@ public class ProfActivity extends AppCompatActivity{
     private CursoAdapter cursoAdapter;
     private SearchView txtBuscar;
     private Spinner spnCate;
+    private Button btnFiltrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class ProfActivity extends AppCompatActivity{
         recyclerView = findViewById(R.id.ListRecycler);
         txtBuscar = findViewById(R.id.txtBuscar);
         spnCate = findViewById(R.id.spnCategoria);
+        btnFiltrar = findViewById(R.id.btnFiltrar);
         //card = findViewById()
         serviceAPI = ConexionREST.getConnection().create(ServiceAPI.class);
         cargarDatosDelAPI();
@@ -53,8 +55,16 @@ public class ProfActivity extends AppCompatActivity{
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                cursoAdapter.filtrado(newText);
+                cursoAdapter.filtradoSearch(newText);
                 return false;
+            }
+        });
+
+        btnFiltrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selected = spnCate.getSelectedItem().toString();
+                cursoAdapter.filtradoSpn(selected);
             }
         });
 
@@ -69,14 +79,20 @@ public class ProfActivity extends AppCompatActivity{
                 if(response.isSuccessful())
                 {
                     List<Curso> lstCurso = response.body();
-                    List<String> categoria = lstCurso.stream().map(s->s.getCategoria()).distinct().collect(Collectors.toList());
-                    ArrayAdapter array = new ArrayAdapter(ProfActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item ,categoria);
 
                     cursoAdapter = new CursoAdapter(lstCurso, ProfActivity.this);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(ProfActivity.this));
                     recyclerView.setAdapter(cursoAdapter);
+                    //crea una lista con las categorias existentes
+                    List<String> categoria = new ArrayList<>();
+                    categoria.add("Sin filtro");
+                    categoria.addAll(lstCurso.stream().map(s->s.getCategoria()).distinct().collect(Collectors.toList()));
+                    //se crea un adaptador para q el spinner pueda usar la lista.
+                    ArrayAdapter array = new ArrayAdapter(ProfActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item ,categoria);
+                    //establecer el diseno del spinner
                     array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    //se establece el adaptador al spinner
                     spnCate.setAdapter(array);
                 }else
                 {
