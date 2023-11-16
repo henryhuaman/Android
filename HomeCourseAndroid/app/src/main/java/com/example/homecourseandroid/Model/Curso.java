@@ -1,6 +1,8 @@
 package com.example.homecourseandroid.Model;
 
-public class Curso {
+import java.io.Serializable;
+
+public class Curso implements Serializable {
     private String id;
     private String nombre;
     private String descripcion;

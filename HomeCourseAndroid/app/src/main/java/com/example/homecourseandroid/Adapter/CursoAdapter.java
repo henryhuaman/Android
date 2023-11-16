@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homecourseandroid.Activities.DetallesCursoActivity;
 import com.example.homecourseandroid.Activities.MainActivity;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
@@ -117,7 +118,8 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
             verDet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, MainActivity.class);
+                    Intent intent = new Intent(context, DetallesCursoActivity.class);
+                    intent.putExtra("Curso", item);
                     context.startActivity(intent);
                 }
             });
