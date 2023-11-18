@@ -1,27 +1,27 @@
 package com.example.homecourseandroid.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.homecourseandroid.Adapter.CursoAdapter;
-import com.example.homecourseandroid.Api.ServiceAPI;
+import com.example.homecourseandroid.Adapter.ProfesorAdapter;
+import com.example.homecourseandroid.Api.ProfesorServiceAPI;
 import com.example.homecourseandroid.Model.Curso;
+import com.example.homecourseandroid.Model.Profesor;
 import com.example.homecourseandroid.R;
 import com.example.homecourseandroid.Util.ConexionREST;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,71 +29,37 @@ import retrofit2.Response;
 
 public class ProfActivity extends AppCompatActivity{
 
-    public ServiceAPI serviceAPI;
-    private RecyclerView recyclerView;
-    private CursoAdapter cursoAdapter;
-    private SearchView txtBuscar;
-    private Spinner spnCate;
-    private Button btnFiltrar;
+    public ProfesorServiceAPI profesorServiceAPI;
+    private RecyclerView recyclerViewProf;
+    private ProfesorAdapter profesorAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prof);
-        recyclerView = findViewById(R.id.ListRecycler);
-        txtBuscar = findViewById(R.id.txtBuscar);
-        spnCate = findViewById(R.id.spnCategoria);
-        btnFiltrar = findViewById(R.id.btnFiltrar);
-        //card = findViewById()
-        serviceAPI = ConexionREST.getConnection().create(ServiceAPI.class);
+
+        recyclerViewProf = findViewById(R.id.ListRecyclerProf);
+        toolbar = findViewById(R.id.toolbarProf);
+        setSupportActionBar(toolbar);
+        profesorServiceAPI = ConexionREST.getConnection().create(ProfesorServiceAPI.class);
         cargarDatosDelAPI();
-        txtBuscar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                cursoAdapter.filtradoSearch(newText);
-                return false;
-            }
-        });
-
-        btnFiltrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String selected = spnCate.getSelectedItem().toString();
-                cursoAdapter.filtradoSpn(selected);
-            }
-        });
-
 
     }
 
     void cargarDatosDelAPI(){
-        Call<List<Curso>> call = serviceAPI.listCursos();
-        call.enqueue(new Callback<List<Curso>>() {
+        Call<List<Profesor>> call = profesorServiceAPI.listProfesores();
+        call.enqueue(new Callback<List<Profesor>>() {
             @Override
-            public void onResponse(Call<List<Curso>> call, Response<List<Curso>> response) {
+            public void onResponse(Call<List<Profesor>> call, Response<List<Profesor>> response) {
                 if(response.isSuccessful())
                 {
-                    List<Curso> lstCurso = response.body();
+                    List<Profesor> lstProf = response.body();
 
-                    cursoAdapter = new CursoAdapter(lstCurso, ProfActivity.this);
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ProfActivity.this));
-                    recyclerView.setAdapter(cursoAdapter);
-                    //crea una lista con las categorias existentes
-                    List<String> categoria = new ArrayList<>();
-                    categoria.add("Sin filtro");
-                    categoria.addAll(lstCurso.stream().map(s->s.getCategoria()).distinct().collect(Collectors.toList()));
-                    //se crea un adaptador para q el spinner pueda usar la lista.
-                    ArrayAdapter array = new ArrayAdapter(ProfActivity.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item ,categoria);
-                    //establecer el diseno del spinner
-                    array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    //se establece el adaptador al spinner
-                    spnCate.setAdapter(array);
+                    profesorAdapter = new ProfesorAdapter(lstProf, ProfActivity.this);
+                    recyclerViewProf.setHasFixedSize(true);
+                    recyclerViewProf.setLayoutManager(new LinearLayoutManager(ProfActivity.this));
+                    recyclerViewProf.setAdapter(profesorAdapter);
                 }else
                 {
                     Toast.makeText(null,"Error",Toast.LENGTH_LONG).show();
@@ -101,7 +67,7 @@ public class ProfActivity extends AppCompatActivity{
             }
 
             @Override
-            public void onFailure(Call<List<Curso>> call, Throwable t) {
+            public void onFailure(Call<List<Profesor>> call, Throwable t) {
                 System.err.println("Error en la solicitud: " + t.getMessage());
                 System.err.println("StackTrace: ");
                 t.printStackTrace(); // Esto imprimirá la traza de la pila para obtener más detalles del error.
@@ -109,6 +75,42 @@ public class ProfActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navbar, menu);
+        configurarVisibilidadMenu(menu);
+        return true;
+    }
+
+    private void configurarVisibilidadMenu(Menu menu) {
+        MenuItem itemCursos = menu.findItem(R.id.itIniciarSesion);
+        MenuItem itemProfesores = menu.findItem(R.id.itRegistrarse);
+
+        // Configurar visibilidad basada en condiciones
+        itemCursos.setVisible(true);
+        itemProfesores.setVisible(true);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.itIniciarSesion) {
+            // Acción cuando se selecciona la opción de cursos
+            return true;
+        } else if (id == R.id.itRegistrarse) {
+            // Acción cuando se selecciona la opción de profesores
+            return true;
+        } else if (id == R.id.itCarrito) {
+            // Acción cuando se selecciona la opción del carrito
+
+            return true;
+        } else if (id ==R.id.itVolver) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

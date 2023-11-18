@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface ServiceAPI
+public interface CursoServiceAPI
 {
     @GET("curso")
     public abstract Call<List<Curso>> listCursos();
@@ -20,5 +20,5 @@ public interface ServiceAPI
     @PUT("/curso/modificar")
     public abstract  Call<Curso> modifyCurso(@Body Curso obj);
     @DELETE("curso/eliminar/{id}")
-    public abstract Call<Curso> removeCurso(@Path("id") int id);
+    public abstract Call<Curso> removeCurso(@Path("id") String id);
 }

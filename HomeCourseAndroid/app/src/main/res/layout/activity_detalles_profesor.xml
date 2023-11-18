@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Activities.DetallesProfesorActivity">
+
+    <ImageView
+        android:id="@+id/profImage"
+        android:layout_width="234dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="70dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/detallesicon"
+        app:layout_constraintBottom_toTopOf="@+id/tvCourseTitle"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCourseTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Mas detalles"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/profImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/vtNombreProf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre : "
+        android:textSize="17dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvCourseTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/vtTelfProf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Telefono: "
+        android:textSize="17dp"
+        app:layout_constraintTop_toBottomOf="@+id/vtNombreProf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/vtCorrProfesor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Correo: "
+        android:textSize="17dp"
+        app:layout_constraintTop_toBottomOf="@+id/vtTelfProf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+
+    <TextView
+        android:id="@+id/vtN"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Cursos:  "
+        android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vtCorrProfesor" />
+
+    <Button
+        android:id="@+id/btnVolverProf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="Volver"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/vtCurProf"
+        android:layout_width="315dp"
+        android:layout_height="215dp"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="8dp"
+        android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vtN" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

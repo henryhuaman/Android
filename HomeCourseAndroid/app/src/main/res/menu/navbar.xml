@@ -2,27 +2,29 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/logo"
-        android:icon="@drawable/iconoprincipal"
-        android:title="HomeCurse"
-        />
 
     <item
-        android:title="Cursos"
+        android:title="Registrarse"
         android:icon="@drawable/cursos"
-        android:id="@+id/itCursos"
+        android:id="@+id/itIniciarSesion"
         />
     <item
-        android:title="Profesores"
+        android:title="Iniciar Sesion"
         android:icon="@drawable/profesores"
-        android:id="@+id/itProfesores"/>
-
+        android:id="@+id/itRegistrarse"/>
+    <item
+        android:id="@+id/itVolver"
+        android:icon="@drawable/volver"
+        android:title="volver"
+        app:showAsAction="ifRoom"
+        />
     <item
         android:id="@+id/itCarrito"
         android:icon="@drawable/carrito"
-        android:title=""
+        android:title="carrito"
+        app:showAsAction="ifRoom"
         />
+
 
 
 
