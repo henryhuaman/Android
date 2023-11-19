@@ -4,13 +4,6 @@
 
 
     <item
-        android:title="Registrarse"
-        android:id="@+id/itRegistrarse"
-        />
-    <item
-        android:title="Iniciar Sesion"
-        android:id="@+id/itIniciarSesion"/>
-    <item
         android:id="@+id/itVolver"
         android:icon="@drawable/volver"
         android:title="volver"
@@ -43,9 +36,4 @@
         android:id="@+id/itCerrarSesion"
         android:title="Cerrar Sesion"
         />
-
-
-
-
-
 </menu>

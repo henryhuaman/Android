@@ -2,7 +2,6 @@ package com.example.homecourseandroid.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.homecourseandroid.Adapter.ProfesorAdapter;
 import com.example.homecourseandroid.Api.UsuarioServiceAPI;
-import com.example.homecourseandroid.Model.Profesor;
 import com.example.homecourseandroid.Model.Usuario;
 import com.example.homecourseandroid.R;
 import com.example.homecourseandroid.Util.ConexionREST;
@@ -97,7 +94,7 @@ public class IniciarActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navbar, menu);
+        getMenuInflater().inflate(R.menu.navbar_principal, menu);
         configurarVisibilidadMenu(menu);
         return true;
     }

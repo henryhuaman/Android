@@ -57,7 +57,6 @@ public class DetallesProfesorActivity extends AppCompatActivity {
 
 
     }
-
     void generarCursosDeProfesor(String id){
         Call<List<Curso>> call = cursoServiceAPI.listCursos();
         call.enqueue(new Callback<List<Curso>>() {
@@ -91,5 +90,6 @@ public class DetallesProfesorActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

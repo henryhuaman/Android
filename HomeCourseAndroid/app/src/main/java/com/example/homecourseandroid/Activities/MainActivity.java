@@ -2,6 +2,8 @@ package com.example.homecourseandroid.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,61 +11,41 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.example.homecourseandroid.R;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Button btnProf;
-    private Button btnCur;
-    Toolbar toolbar;
-
-    private boolean mostrarCursos = true;
-    private boolean mostrarProfesores = true;
-
+    private Toolbar toolbar;
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        btnProf = (Button) findViewById(R.id.btnProfesores);
-        btnCur = (Button) findViewById(R.id.btnCursos);
+        sessionManager = SessionManager.getInstance(this);
         toolbar = findViewById(R.id.toolbarr);
         setSupportActionBar(toolbar);
-
-        //ToolBarr.setupToolbar(this, toolbar, "Título de la Actividad", true);
-        btnCur.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, CursoActivity.class );
-                startActivity(i);
-            }
-        });
-
-        btnProf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ProfActivity.class));
-            }
-        });
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.FragPrin, new PrincipalFragment());
+        ft.commit();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navbar, menu);
-        configurarVisibilidadMenu(menu);
+        if(sessionManager.isLoggedIn()){
+            String id = sessionManager.getUserId().substring(0,2);
+            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
+            if(id.equals("US")) {
+                getMenuInflater().inflate(R.menu.navbar_usuario, menu);
+            } else if (id.equals("PR")) {
+                getMenuInflater().inflate(R.menu.navbar_principal, menu);
+            }
+        }else{
+            getMenuInflater().inflate(R.menu.navbar_principal, menu);
+        }
         return true;
-    }
-
-    private void configurarVisibilidadMenu(Menu menu) {
-        MenuItem itemCursos = menu.findItem(R.id.itIniciarSesion);
-        MenuItem itemProfesores = menu.findItem(R.id.itRegistrarse);
-
-        // Configurar visibilidad basada en condiciones
-        itemCursos.setVisible(mostrarCursos);
-        itemProfesores.setVisible(mostrarProfesores);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -71,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.itIniciarSesion) {
             // Acción cuando se selecciona la opción de cursos
-            startActivity(new Intent(MainActivity.this,IniciarActivity.class));
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.FragPrin, new IniciarFragment())
+                    .commit();
             return true;
         } else if (id == R.id.itRegistrarse) {
             // Acción cuando se selecciona la opción de profesores
@@ -80,10 +64,19 @@ public class MainActivity extends AppCompatActivity {
             // Acción cuando se selecciona la opción del carrito
 
             return true;
-        } else if (id ==R.id.itVolver) {
+        } else if (id == R.id.itVolver) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if (fragmentManager.getBackStackEntryCount() > 0) {
+                fragmentManager.popBackStack(); // Retrocede al fragmento anterior
+            } else {
+                // Si no hay fragmentos en el historial de retroceso, cierra la actividad
+                finish();
+            }
+        } else if (id == R.id.itCerrarSesion) {
+            sessionManager.logoutUser();
             finish();
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
