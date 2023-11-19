@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.itIniciarSesion) {
             // Acción cuando se selecciona la opción de cursos
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.FragPrin, new IniciarFragment())
+                    .replace(R.id.FragPrin, new IniciarFragment()).addToBackStack(null)
                     .commit();
             return true;
         } else if (id == R.id.itRegistrarse) {
@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.itCarrito) {
             // Acción cuando se selecciona la opción del carrito
-
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.FragPrin, new CarritoFragment()).addToBackStack(null)
+                    .commit();
             return true;
         } else if (id == R.id.itVolver) {
             FragmentManager fragmentManager = getSupportFragmentManager();
