@@ -5,13 +5,11 @@
 
     <item
         android:title="Registrarse"
-        android:icon="@drawable/cursos"
-        android:id="@+id/itIniciarSesion"
+        android:id="@+id/itRegistrarse"
         />
     <item
         android:title="Iniciar Sesion"
-        android:icon="@drawable/profesores"
-        android:id="@+id/itRegistrarse"/>
+        android:id="@+id/itIniciarSesion"/>
     <item
         android:id="@+id/itVolver"
         android:icon="@drawable/volver"
@@ -24,6 +22,28 @@
         android:title="carrito"
         app:showAsAction="ifRoom"
         />
+    <item
+        android:id="@+id/itCursos"
+        android:title="Cursos"
+        android:icon="@drawable/cursos"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/itProfesores"
+        android:title="Profesores"
+        android:icon="@drawable/profesores"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/itTusCursos"
+        android:title="Tus Cursos"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/itCerrarSesion"
+        android:title="Cerrar Sesion"
+        />
+
 
 
 

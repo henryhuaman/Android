@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ public class ProfActivity extends AppCompatActivity{
     private RecyclerView recyclerViewProf;
     private ProfesorAdapter profesorAdapter;
     private Toolbar toolbar;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class ProfActivity extends AppCompatActivity{
         recyclerViewProf = findViewById(R.id.ListRecyclerProf);
         toolbar = findViewById(R.id.toolbarProf);
         setSupportActionBar(toolbar);
+        sessionManager = SessionManager.getInstance(this);
+
         profesorServiceAPI = ConexionREST.getConnection().create(ProfesorServiceAPI.class);
         cargarDatosDelAPI();
 
@@ -85,12 +89,18 @@ public class ProfActivity extends AppCompatActivity{
     }
 
     private void configurarVisibilidadMenu(Menu menu) {
-        MenuItem itemCursos = menu.findItem(R.id.itIniciarSesion);
-        MenuItem itemProfesores = menu.findItem(R.id.itRegistrarse);
+        MenuItem itemIniciarSesion = menu.findItem(R.id.itIniciarSesion);
+        MenuItem itemRegistrarse = menu.findItem(R.id.itRegistrarse);
+        MenuItem itemTusCursos = menu.findItem(R.id.itTusCursos);
+        MenuItem itemProfesores = menu.findItem(R.id.itProfesores);
+        MenuItem itemCursos = menu.findItem(R.id.itCursos);
 
-        // Configurar visibilidad basada en condiciones
-        itemCursos.setVisible(true);
-        itemProfesores.setVisible(true);
+        if(sessionManager.isLoggedIn()){
+            itemTusCursos.setVisible(false);
+            itemRegistrarse.setVisible(false);
+            itemCursos.setVisible(false);
+            itemProfesores.setVisible(false);
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -98,6 +108,7 @@ public class ProfActivity extends AppCompatActivity{
 
         if (id == R.id.itIniciarSesion) {
             // Acción cuando se selecciona la opción de cursos
+            startActivity(new Intent(getApplicationContext(),IniciarActivity.class));
             return true;
         } else if (id == R.id.itRegistrarse) {
             // Acción cuando se selecciona la opción de profesores

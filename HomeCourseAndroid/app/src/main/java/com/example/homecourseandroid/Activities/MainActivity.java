@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private boolean mostrarCursos = true;
-    private boolean mostrarProfesores = false;
+    private boolean mostrarProfesores = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.itIniciarSesion) {
             // Acción cuando se selecciona la opción de cursos
+            startActivity(new Intent(MainActivity.this,IniciarActivity.class));
             return true;
         } else if (id == R.id.itRegistrarse) {
             // Acción cuando se selecciona la opción de profesores
