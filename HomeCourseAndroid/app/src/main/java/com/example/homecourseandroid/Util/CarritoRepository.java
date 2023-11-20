@@ -8,28 +8,37 @@ import com.example.homecourseandroid.Model.CarritoDeCompras;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarritoRepository extends ViewModel {
-    private MutableLiveData<List<CarritoDeCompras>> car;
+public class CarritoRepository {
+    private static CarritoRepository instance;
+    private List<CarritoDeCompras> carritoList;
 
-    public void add(CarritoDeCompras carrito){
-        List<CarritoDeCompras> carActual = car.getValue();
-        carActual.add(carrito);
-        car.setValue(carActual);
+    private CarritoRepository() {
+        // Constructor privado para evitar la creación directa de instancias
+        carritoList = new ArrayList<>();
     }
-    public void delete(String id) {
-        List<CarritoDeCompras> carActual = car.getValue();
-        carActual.removeIf(c -> c.getIdCur().equals(id));
-        car.setValue(carActual);
-    }
-    public void deleteAll(){
-        car.setValue(new ArrayList<>());
-    }
-    public MutableLiveData<List<CarritoDeCompras>> getAllCarritoDeCompras(){
-        if(car==null){
-            //inicializa
-            car = new MutableLiveData<>();
-            car.setValue(new ArrayList<>());
+
+    public static synchronized CarritoRepository getInstance() {
+        // Método para obtener la instancia única del Singleton
+        if (instance == null) {
+            instance = new CarritoRepository();
         }
-        return car;
+        return instance;
+    }
+
+    public void add(CarritoDeCompras carrito) {
+        carritoList.add(carrito);
+    }
+
+    public void delete(String id) {
+        carritoList.removeIf(c->c.getIdCur().equals(id));
+
+    }
+
+    public void deleteAll() {
+        carritoList.clear();
+    }
+
+    public List<CarritoDeCompras> getAllCarritoDeCompras() {
+        return carritoList;
     }
 }

@@ -3,12 +3,25 @@ package com.example.homecourseandroid.Activities;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviderGetKt;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.homecourseandroid.Adapter.CarritoAdapter;
+import com.example.homecourseandroid.Model.CarritoDeCompras;
 import com.example.homecourseandroid.R;
+import com.example.homecourseandroid.Util.CarritoRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,8 +36,10 @@ public class CarritoFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private CarritoRepository carrito;
+    private TextView txt;
+    private CarritoAdapter carritoAdapter;
+    private RecyclerView recyclerViewCar;
 
     public CarritoFragment() {
         // Required empty public constructor
@@ -52,8 +67,8 @@ public class CarritoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            //mParam1 = getArguments().getString(ARG_PARAM1);
+            //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -61,6 +76,27 @@ public class CarritoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carrito, container, false);
+        View v = inflater.inflate(R.layout.fragment_carrito, container, false);
+        recyclerViewCar = v.findViewById(R.id.recyclerViewCarrito);
+        carrito = CarritoRepository.getInstance();
+
+        mostrarCarrito();
+
+
+        return v;
+    }
+
+    void mostrarCarrito(){
+        List<CarritoDeCompras> c = carrito.getAllCarritoDeCompras();
+        if(c.isEmpty()){
+            Toast.makeText(getContext(), "No tienes nada en tu carrito", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getContext(),c.stream().findFirst().get().getNomCur(),Toast.LENGTH_LONG).show();
+            carritoAdapter = new CarritoAdapter(c,getContext());
+            recyclerViewCar.setHasFixedSize(true);
+            recyclerViewCar.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerViewCar.setAdapter(carritoAdapter);
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.homecourseandroid.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.homecourseandroid.Activities.DetallesCursoActivity;
+
+import com.example.homecourseandroid.Activities.DetallesCursoFragment;
 import com.example.homecourseandroid.Activities.MainActivity;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
@@ -118,9 +122,15 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
             verDet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DetallesCursoActivity.class);
-                    intent.putExtra("Curso", item);
-                    context.startActivity(intent);
+                    //Intent intent = new Intent(context, DetallesCursoActivity.class);
+                    //intent.putExtra("Curso", item);
+                    //context.startActivity(intent);
+                    DetallesCursoFragment fragment = new DetallesCursoFragment();
+                    Bundle args = new Bundle();
+                    args.putSerializable("curso",item);
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.FragPrin,fragment).commit();
                 }
             });
 
