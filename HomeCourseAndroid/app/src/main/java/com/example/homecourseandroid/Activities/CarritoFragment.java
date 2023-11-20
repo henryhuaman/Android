@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +38,7 @@ public class CarritoFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private CarritoRepository carrito;
-    private TextView txt;
+    private Button btnCarComprar;
     private CarritoAdapter carritoAdapter;
     private RecyclerView recyclerViewCar;
 
@@ -79,9 +80,23 @@ public class CarritoFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_carrito, container, false);
         recyclerViewCar = v.findViewById(R.id.recyclerViewCarrito);
         carrito = CarritoRepository.getInstance();
+        btnCarComprar =v.findViewById(R.id.btnCarComprar);
 
         mostrarCarrito();
 
+        btnCarComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(SessionManager.getInstance(getContext()).isLoggedIn()){
+                    Toast.makeText(getContext(), ""+CarritoRepository.getInstance().getAllCarritoDeCompras().stream().count(), Toast.LENGTH_SHORT).show();
+
+                }else{
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.FragPrin,new IniciarFragment())
+                            .addToBackStack(null).commit();
+                }
+            }
+        });
 
         return v;
     }
@@ -91,11 +106,11 @@ public class CarritoFragment extends Fragment {
         if(c.isEmpty()){
             Toast.makeText(getContext(), "No tienes nada en tu carrito", Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(getContext(),c.stream().findFirst().get().getNomCur(),Toast.LENGTH_LONG).show();
-            carritoAdapter = new CarritoAdapter(c,getContext());
-            recyclerViewCar.setHasFixedSize(true);
-            recyclerViewCar.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerViewCar.setAdapter(carritoAdapter);
+                carritoAdapter = new CarritoAdapter(c,getContext());
+                recyclerViewCar.setHasFixedSize(true);
+                recyclerViewCar.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerViewCar.setAdapter(carritoAdapter);
+
         }
 
     }

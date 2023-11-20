@@ -24,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sessionManager = SessionManager.getInstance(this);
+        if(sessionManager.isLoggedIn()){
+            startActivity(new Intent(this, UsuarioActivity.class));
+            finish();
+        }
         toolbar = findViewById(R.id.toolbarr);
         setSupportActionBar(toolbar);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -36,12 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if(sessionManager.isLoggedIn()){
             String id = sessionManager.getUserId().substring(0,2);
-            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
-            if(id.equals("US")) {
-                getMenuInflater().inflate(R.menu.navbar_usuario, menu);
-            } else if (id.equals("PR")) {
-                getMenuInflater().inflate(R.menu.navbar_principal, menu);
-            }
+            Toast.makeText(this,"Sesion activa",Toast.LENGTH_LONG).show();
         }else{
             getMenuInflater().inflate(R.menu.navbar_principal, menu);
         }

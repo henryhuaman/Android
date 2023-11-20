@@ -3,6 +3,7 @@ package com.example.homecourseandroid.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.homecourseandroid.Model.CarritoDeCompras;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
 import com.example.homecourseandroid.Util.CarritoRepository;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +36,7 @@ public class DetallesCursoFragment extends Fragment {
     private TextView nomCur;
     private TextView desCur;
     private TextView proCur;
-    private Button btnVolver, btnAddCarr;
+    private Button btnAddCarr;
     private Curso curso;
     public DetallesCursoFragment() {
         // Required empty public constructor
@@ -75,26 +79,34 @@ public class DetallesCursoFragment extends Fragment {
         nomCur = v.findViewById(R.id.vtNombre);
         desCur = v.findViewById(R.id.vtDescripcion);
         proCur = v.findViewById(R.id.vtProfesor);
-        btnVolver = v.findViewById(R.id.btnVolver);
         btnAddCarr = v.findViewById(R.id.btnAddCarr);
 
         nomCur.append(curso.getNombre());
         desCur.append(curso.getDescripcion());
         proCur.append(curso.getProfesorId());
 
-        btnVolver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //finish();
-            }
-        });
 
         btnAddCarr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<CarritoDeCompras> lst = CarritoRepository.getInstance().getAllCarritoDeCompras();
                 CarritoDeCompras c = new CarritoDeCompras(curso.getId(),curso.getNombre(),curso.getCategoria(),curso.getPrecio());
-                CarritoRepository.getInstance().add(c);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.FragPrin,new CarritoFragment()).commit();
+                if(!lst.stream().anyMatch(cu->cu.getIdCur().equals(c.getIdCur()))){
+                    CarritoRepository.getInstance().add(c);
+                    if(SessionManager.getInstance(getContext()).isLoggedIn()){
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.FragUsu,new CarritoFragment())
+                                .addToBackStack(null).commit();
+                    }else{
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.FragPrin,new CarritoFragment())
+                                .addToBackStack(null).commit();
+                    }
+                }else{
+                    Toast.makeText(getContext(), "Ya tiene este curso en su carrito", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 

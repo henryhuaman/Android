@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.homecourseandroid.Activities.DetallesCursoFragment;
 import com.example.homecourseandroid.Activities.MainActivity;
+import com.example.homecourseandroid.Activities.SessionManager;
 import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
 
@@ -130,7 +131,12 @@ public class CursoAdapter extends RecyclerView.Adapter<CursoAdapter.ViewHolder>{
                     args.putSerializable("curso",item);
                     fragment.setArguments(args);
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.FragPrin,fragment).commit();
+                    if(SessionManager.getInstance(((AppCompatActivity) context).getApplication()).isLoggedIn()){
+                        fragmentManager.beginTransaction().replace(R.id.FragUsu,fragment).addToBackStack(null).commit();
+                    }else{
+                        fragmentManager.beginTransaction().replace(R.id.FragPrin,fragment).addToBackStack(null).commit();
+                    }
+
                 }
             });
 

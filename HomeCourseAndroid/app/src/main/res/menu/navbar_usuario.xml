@@ -33,6 +33,12 @@
         app:showAsAction="ifRoom"
         />
     <item
+        android:id="@+id/itVerPerfil"
+        android:title="Ver Perfil"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/itCerrarSesion"
         android:title="Cerrar Sesion"
         />

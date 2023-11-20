@@ -64,7 +64,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     CarritoRepository.getInstance().delete(item.getIdCur());
-                    notifyItemChanged(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
 
                 }
             });

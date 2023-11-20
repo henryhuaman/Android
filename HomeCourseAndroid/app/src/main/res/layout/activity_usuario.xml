@@ -6,4 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Activities.UsuarioActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarUsu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:logo="@drawable/iconoprincipal"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/FragUsu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarUsu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

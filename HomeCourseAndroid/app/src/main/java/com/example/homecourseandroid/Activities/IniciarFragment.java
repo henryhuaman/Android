@@ -1,5 +1,6 @@
 package com.example.homecourseandroid.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -101,8 +102,8 @@ public class IniciarFragment extends Fragment {
                                     Usuario user = lstUsu.stream().filter(u->u.getCorreo().equals(mail) || u.getContraseña().equals(pass)).findFirst().get();
                                     sessionManager.loginUser(user.getId());
                                     Toast.makeText(getContext(),"Exitoso "+lstUsu.stream().filter(u->u.getId().equals(sessionManager.getUserId())).findFirst().get().getNombre(),Toast.LENGTH_LONG).show();
-
-
+                                    startActivity(new Intent(getContext(), UsuarioActivity.class));
+                                    getActivity().finish();
                                 }else{
                                     getActivity().recreate();
                                 }
