@@ -78,6 +78,7 @@ public class DetallesProfesorActivity extends AppCompatActivity {
                 {
                     Toast.makeText(null,"Error",Toast.LENGTH_LONG).show();
                 }
+
             }
 
             @Override

@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.itRegistrarse) {
             // Acción cuando se selecciona la opción de profesores
+
             return true;
         } else if (id == R.id.itCarrito) {
             // Acción cuando se selecciona la opción del carrito

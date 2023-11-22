@@ -21,7 +21,9 @@ import com.example.homecourseandroid.Model.Curso;
 import com.example.homecourseandroid.R;
 import com.example.homecourseandroid.Util.ConexionREST;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -143,6 +145,7 @@ public class CursoFragment extends Fragment {
                 {
                     Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG).show();
                 }
+
             }
 
             @Override
@@ -155,4 +158,21 @@ public class CursoFragment extends Fragment {
             }
         });
     }
+    //*************************************************
+    List<Curso> listar(Curso curso){
+
+        List<Curso> crs = (List<Curso>) cursoServiceAPI.listCursos();
+        try {
+            Response<List<Curso>> response = cursoServiceAPI.listCursos().execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                return Collections.emptyList();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
+
 }
