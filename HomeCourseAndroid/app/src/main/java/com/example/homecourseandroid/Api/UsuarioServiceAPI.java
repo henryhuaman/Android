@@ -18,7 +18,7 @@ public interface UsuarioServiceAPI {
     @GET("usuario")
     public abstract Call<List<Usuario>> listUsuarios();
     @POST("usuario/agregar")
-    public abstract Call<Usuario> addUsuarios(@Body Usuario obj);
+    public abstract Call<Usuario> registrarUsuario(@Body Usuario usuario);
 
     @PUT("/usuario/modificar")
     public abstract  Call<Usuario> modifyUsuarios(@Body Usuario obj);

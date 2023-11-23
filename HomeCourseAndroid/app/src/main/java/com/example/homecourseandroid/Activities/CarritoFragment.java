@@ -143,7 +143,7 @@ public class CarritoFragment extends Fragment {
             }
         }
 
-        String iD = inscripcionRepository.generarCodigo();
+        String iD = inscripcionRepository.generarCodigo(new ArrayList<>());
         for (Inscripcion lt: lst) {
             Inscripcion aux = lt;
             aux.setCodOpe(iD);
@@ -174,8 +174,6 @@ public class CarritoFragment extends Fragment {
 
 
     }
-
-
 
 
 }

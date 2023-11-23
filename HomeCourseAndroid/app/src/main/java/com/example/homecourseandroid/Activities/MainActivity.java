@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.itRegistrarse) {
             // Acción cuando se selecciona la opción de profesores
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.FragPrin, new RegistroFragment()).addToBackStack(null)
+                    .commit();
 
             return true;
         } else if (id == R.id.itCarrito) {

@@ -72,33 +72,28 @@ public class InscripcionRepository {
         });
         return lst;
     }
-    public String generarCodigo(){
+    public String generarCodigo(List<Inscripcion> lstInscripciones) {
         String codigo = "";
-        List<Inscripcion> lstInscripcions= getInscripciones();
+        int quant = 0;
 
-        if(!lstInscripcions.isEmpty()){
-            int numero = lstInscripcions.stream().
-                    map(a->Integer.parseInt(a.getCodOpe().replaceAll("\\D", "")))
-                    .distinct().max(Integer::compare).orElse(0);
-            if(String.valueOf(numero).length()==1){
-                codigo ="IN00" + (numero+1);
-            }
-            else if(String.valueOf(numero).length()==2){
-                codigo ="IN0" + (numero+1);
-            }
-            else if(String.valueOf(numero).length()==3){
-                codigo ="IN" + (numero+1);
-            }
-            else{
-                return codigo;
-            }
-            return codigo;
-        }else{
-            codigo = "IN001";
-            return codigo;
+        if (lstInscripciones != null && !lstInscripciones.isEmpty()) {
+            // Obtener el número máximo de CodOpe
+            int numero = lstInscripciones.stream()
+                    .map(a -> Integer.parseInt(a.getCodOpe().replaceAll("\\D", "")))
+                    .distinct()
+                    .max(Integer::compare)
+                    .orElse(0);
+
+            quant = numero + 1;
         }
 
+        // Formatear el número con ceros a la izquierda
+        String formattedNumber = String.format("%03d", quant);
+        codigo = "IN" + formattedNumber;
+
+        return codigo;
     }
+
 
     public int teDoy(String cod){
         return Integer.parseInt(cod.replaceAll("\\D", ""));
