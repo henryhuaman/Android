@@ -61,6 +61,10 @@ public class UsuarioActivity extends AppCompatActivity {
                     .commit();
             return true;
         } else if (id == R.id.itVerPerfil) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.FragUsu, new PerfilFragment()).addToBackStack(null)
+                    .commit();
+            return true;
 
 
         } else if (id == R.id.itVolver) {

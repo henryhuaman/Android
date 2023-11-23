@@ -78,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         } else if (id == R.id.itCerrarSesion) {
-            sessionManager.logoutUser();
-            finish();
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.FragPrin, new PerfilFragment()).addToBackStack(null)
+                    .commit();
         }
+
         return super.onOptionsItemSelected(item);
     }
 

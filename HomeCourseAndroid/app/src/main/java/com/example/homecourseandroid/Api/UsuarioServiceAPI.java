@@ -17,6 +17,9 @@ public interface UsuarioServiceAPI {
 
     @GET("usuario")
     public abstract Call<List<Usuario>> listUsuarios();
+
+    @GET("usuario/{id}")
+    public abstract Call<Usuario> getUsuario(@Path("id") String id);
     @POST("usuario/agregar")
     public abstract Call<Usuario> registrarUsuario(@Body Usuario usuario);
 
