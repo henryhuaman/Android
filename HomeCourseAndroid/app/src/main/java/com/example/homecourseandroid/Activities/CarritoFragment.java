@@ -132,6 +132,10 @@ public class CarritoFragment extends Fragment {
                     if (lstApi.stream().noneMatch(i ->
                             i.getCursoId().equals(ins.getCursoId()) && i.getUsuarioId().equals(ins.getUsuarioId()))) {
                         lst.add(ins);
+                    }else{
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(getActivity(), "repee", Toast.LENGTH_SHORT).show();
+                        });
                     }
                 }
 
@@ -147,7 +151,7 @@ public class CarritoFragment extends Fragment {
                     }
 
                 }
-                carrito.deleteAll();
+
 
             }
             @Override
@@ -155,6 +159,7 @@ public class CarritoFragment extends Fragment {
                 Toast.makeText(getContext(), "error", Toast.LENGTH_SHORT).show();
             }
         });
+        this.carrito.deleteAll();
     }
     void agregar(Inscripcion inscripcion){
         Call<Inscripcion> callObj = inscripcionServiceAPI.addInscripcion(inscripcion);
