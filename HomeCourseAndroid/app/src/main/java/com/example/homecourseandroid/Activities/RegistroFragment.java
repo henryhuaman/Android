@@ -2,6 +2,7 @@ package com.example.homecourseandroid.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,40 +73,42 @@ public class RegistroFragment extends Fragment {
 
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_LONG).show();
             return;
+        }else{
+            // Crea el usuario
+            Usuario nuevoUsuario = new Usuario("US007", nombre, correo, contraseña, dni);
+
+            // Llama al api
+            //registrarUsuarioEnAPI(nuevoUsuario);
+
+            Call<Usuario> call = usuarioServiceAPI.registrarUsuario(nuevoUsuario);
+            call.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                    if (response.isSuccessful()) {
+                        Usuario registrado = response.body();
+                        sessionManager.loginUser(registrado.getId());
+                        Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_LONG).show();
+                        // Redirige a la actividad principal o realiza otras acciones necesarias
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                        getActivity().finish();
+                    } else {
+                        String errorMessage = "Error en el registro. Código: " + response.code();
+                        Log.e("TuFragmento", "Error del servidor: " + response.errorBody().toString());
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error en la solicitud: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            });
         }
-
-
-        // Crea el usuario
-        Usuario nuevoUsuario = new Usuario("US004", nombre, correo, contraseña, dni);
-
-        // Llama al api
-        registrarUsuarioEnAPI(nuevoUsuario);
     }
 
     private void registrarUsuarioEnAPI(Usuario usuario) {
-        Call<Usuario> call = usuarioServiceAPI.registrarUsuario(usuario);
-        call.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                if (response.isSuccessful()) {
-                    Usuario registrado = response.body();
-                    sessionManager.loginUser(registrado.getId());
-                    Toast.makeText(getContext(), "Registro exitoso", Toast.LENGTH_LONG).show();
-                    // Redirige a la actividad principal o realiza otras acciones necesarias
-                    startActivity(new Intent(getContext(), MainActivity.class));
-                    getActivity().finish();
-                } else {
-                    String errorMessage = "Error en el registro. Código: " + response.code();
-                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
-                }
-            }
 
-
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-                Toast.makeText(getContext(), "Error en la solicitud: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-        });
     }
 }
